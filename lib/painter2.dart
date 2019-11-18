@@ -293,6 +293,8 @@ class PainterController extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool get isPainting => _pathHistory._inDrag;
+
   bool get canUndo => _pathHistory.canUndo();
   bool get canRedo => _pathHistory.canRedo();
 
