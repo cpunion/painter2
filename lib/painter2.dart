@@ -310,6 +310,10 @@ class PainterController extends ChangeNotifier {
   Future<Uint8List> exportAsPNGBytes() async {
     RenderRepaintBoundary boundary =
         _globalKey.currentContext.findRenderObject();
+    if (boundary.debugNeedsPaint) {
+      await Future.delayed(const Duration(milliseconds: 20));
+      return exportAsPNGBytes();
+    }
     Image image = await boundary.toImage();
     ByteData byteData = await image.toByteData(format: ImageByteFormat.png);
     return byteData.buffer.asUint8List();
