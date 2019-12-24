@@ -178,12 +178,15 @@ class _PathHistory {
         path.lineTo(nextPoint.dx, nextPoint.dy);
         _startFlag = false;
       } else {
-        for (int i=0; i<_paths.length; i++) {
+        for (int i = 0; i < _paths.length; i++) {
           _pathFound = false;
-          for (double x = nextPoint.dx - _eraseArea; x <= nextPoint.dx + _eraseArea; x++) {
-            for (double y = nextPoint.dy - _eraseArea; y <= nextPoint.dy + _eraseArea; y++) {
-              if (_paths[i].key.contains(new Offset(x, y)))
-              {
+          for (double x = nextPoint.dx - _eraseArea;
+              x <= nextPoint.dx + _eraseArea;
+              x++) {
+            for (double y = nextPoint.dy - _eraseArea;
+                y <= nextPoint.dy + _eraseArea;
+                y++) {
+              if (_paths[i].key.contains(new Offset(x, y))) {
                 _undone.add(_paths.removeAt(i));
                 i--;
                 _pathFound = true;
@@ -201,8 +204,10 @@ class _PathHistory {
 
   void endCurrent() {
     Path path = _paths.last.key;
-    if ((_startFlag) && (!_erase)) { //if it was just a tap, draw a point and reset a flag
-      path.addOval(Rect.fromCircle(center: new Offset(_startX, _startY), radius: 1.0));
+    if ((_startFlag) && (!_erase)) {
+      //if it was just a tap, draw a point and reset a flag
+      path.addOval(
+          Rect.fromCircle(center: new Offset(_startX, _startY), radius: 1.0));
       _startFlag = false;
     }
     _inDrag = false;
@@ -265,7 +270,7 @@ class PainterController extends ChangeNotifier {
   bool get eraser => _pathHistory.erase; //setter / getter for eraser
   set eraser(bool e) {
     _pathHistory.erase = e;
-    _pathHistory._eraseArea =  _erasethickness;
+    _pathHistory._eraseArea = _erasethickness;
     _updatePaint();
   }
 
@@ -310,7 +315,7 @@ class PainterController extends ChangeNotifier {
   Future<Uint8List> exportAsPNGBytes() async {
     RenderRepaintBoundary boundary =
         _globalKey.currentContext.findRenderObject();
-    if (boundary.debugNeedsPaint) {
+    if (boundary.debugNeedsPaint != null && boundary.debugNeedsPaint) {
       await Future.delayed(const Duration(milliseconds: 20));
       return exportAsPNGBytes();
     }
